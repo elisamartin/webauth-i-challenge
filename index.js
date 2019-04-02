@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const Users = require('./data/users-model');
 const authentication = require('./authMiddleware');
+const restrictedRouter = require('./routes/restricted');
 const session = require('express-session');
 
 const server = express();
@@ -20,6 +21,8 @@ const sessionConfig = {
 
 server.use(express.json());
 server.use(session(sessionConfig));
+
+server.use('/api/restricted', authentication, restrictedRouter);
 
 server.get('/', (req, res) => {
 	res.send("It's alive!");
